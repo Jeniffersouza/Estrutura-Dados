@@ -93,8 +93,8 @@ tp_lista *mostrarItens(tp_lista *sentinela){
     for (auxNodo; auxNodo != NULL; auxNodo = auxNodo -> next )
     {
         printf( "o codigo do produto é %d \n", auxNodo -> produto.codigo);
-        printf( "o codigo do produto é %s \n", auxNodo -> produto.nome);
-        printf( "o codigo do produto é %f \n", auxNodo -> produto.preco);
+        printf( "o nome do produto é %s \n", auxNodo -> produto.nome);
+        printf( "o preco do produto é %f \n", auxNodo -> produto.preco);
         printf("=========================\n");
     }
     
@@ -103,11 +103,54 @@ tp_lista *mostrarItens(tp_lista *sentinela){
 }
 
 
-tp_lista *excluir (tp_lista *sentinela){
+tp_lista *excluir(tp_lista *sentinela) {
+    int codigo;
+    tp_nodo *auxNodo, *anterior, *proximo;
 
+    if (sentinela->first == NULL) {
+        printf("A lista está vazia. Nada a excluir.\n");
+        return sentinela;
+    }
 
+    printf("Digite o código do produto que deseja excluir: ");
+    scanf("%d", &codigo);
 
+    auxNodo = sentinela->first;
+    anterior = NULL;
 
+    // Procurar o nodo com o código especificado
+    while (auxNodo != NULL && auxNodo->produto.codigo != codigo) {
+        anterior = auxNodo;
+        auxNodo = auxNodo->next;
+    }
+
+    if (auxNodo == NULL) {
+        printf("Produto com o código %d não encontrado na lista.\n", codigo);
+        return sentinela;
+    }
+
+    // Atualizar os ponteiros prev e next dos nodos adjacentes
+    if (anterior != NULL) {
+        anterior->next = auxNodo->next;
+    } else {
+        sentinela->first = auxNodo->next;
+    }
+
+    if (auxNodo->next != NULL) {
+        auxNodo->next->prev = anterior;
+    } else {
+        sentinela->last = anterior;
+    }
+
+    // Liberar a memória do nodo excluído
+    free(auxNodo);
+
+    // Atualizar o número de itens na lista
+    sentinela->nItens--;
+
+    printf("Produto com código %d removido da lista.\n", codigo);
+
+    return sentinela;
 }
 
 
@@ -126,7 +169,7 @@ int main(){
             
              printf("========= DIGITE O NUMERO QUE VOCÊ QUER REMOVER =========\n");
              scanf("%d",&num_remove);
-             //lista = retirar(lista,num_remove);
+             listaSentinela = excluir(listaSentinela);
         }else if(y==3){
              
              printf("============= VEJA SEUS PRODUTOS =============\n");
