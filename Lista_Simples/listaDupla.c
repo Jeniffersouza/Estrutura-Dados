@@ -4,26 +4,29 @@
 #define TAM 10
 
 
-typedef struct produto{
+typedef struct produto{ 
     int codigo;
     char nome[TAM];
     float preco;
-}tp_produto;
+}tp_produto; // Representa a estrutura de um produto, contendo um código, um nome e um preço.
 
 typedef struct nodo{
     tp_produto produto;
     struct nodo *next;
     struct nodo *prev;
-}tp_nodo;
+}tp_nodo; //Representa um nó da lista dupla, contendo um produto, um ponteiro para o próximo nó e um ponteiro para o nó anterior.
 
 typedef struct lista{
-    int nItens;
-    struct nodo *first;
-    struct nodo *last;
-}tp_lista;
+    int nItens; //número de itens na lista
+    struct nodo *first;//ponteiro para o primeiro nó
+    struct nodo *last;//ponteiro para o último nó
+
+
+}tp_lista; //Representa a lista dupla, contendo o número de itens na lista, um ponteiro para o primeiro nó e um ponteiro para o último nó.
 
 tp_lista *inicializar(tp_lista *sentinela) {
 
+  //Inicializa a lista dupla, alocando memória para a sentinela (estrutura que guarda informações sobre a lista).
     sentinela = (tp_nodo*)malloc(sizeof(sentinela)); //GERA U UM ENDEREÇO DE MEMORIA PARA A SENTINELA;
     sentinela -> first = NULL;
     sentinela -> last = NULL;
@@ -41,19 +44,23 @@ tp_lista *inserirNodo(tp_lista *sentinela){
     tp_nodo *novoNodo; // CRIO NOVA VARIAVEL ALEATORIA 
     tp_nodo *auxNodo;
 
-    if(sentinela-> first == NULL && sentinela->last == NULL) // lISTA  SEM ENDEREÇO DE MEMORIA
-    {
-        novoNodo = (tp_nodo*)malloc(sizeof(novoNodo)); //GERA U UM ENDEREÇO DE MEMORIA PARA A NOVO NODO;
+    if(sentinela-> first == NULL && sentinela->last == NULL) // Verifica se a lista está vazia.
+    {// Se estiver, cria um novo nó, solicita informações do produto 
+        novoNodo = (tp_nodo*)malloc(sizeof(novoNodo)); //GERA U UM ENDEREÇO DE MEMORIA PARA A NOVO NO;
+
         printf("DIGITE O CODIGO\n"); 
         scanf("%d",&novoNodo -> produto.codigo);
         printf("DIGITE O NOME\n"); 
         scanf("%s", novoNodo -> produto.nome);
         printf("DIGITE O PRECO\n"); 
         scanf("%f",&novoNodo -> produto.preco);
+
+        // atribui o novo nó como primeiro e último da lista.
         sentinela -> first = novoNodo;
         sentinela -> last = novoNodo;
         sentinela -> nItens = sentinela -> nItens+1;
 
+        //next e prev fica null, pq tem só 1
         novoNodo->next = NULL;
         novoNodo->prev = NULL;
 
@@ -61,6 +68,9 @@ tp_lista *inserirNodo(tp_lista *sentinela){
 
         
     }else{
+
+        //variavel auxiliar que é = ao last da sentinela
+        
         auxNodo = sentinela -> last;
         novoNodo = (tp_nodo*)malloc(sizeof(novoNodo)); //GERA U UM ENDEREÇO DE MEMORIA PARA A NOVO NODO;
         printf("DIGITE O CODIGO\n"); 
