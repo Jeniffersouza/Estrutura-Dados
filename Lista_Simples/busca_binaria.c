@@ -22,6 +22,20 @@ int buscaBinaria(int arr[], int tamanho, int elemento) {
     return -1;
 }
 
+// Função para ordenar a lista usando o Bubble Sort
+void bubbleSort(int arr[], int tamanho) {
+    for (int i = 0; i < tamanho - 1; ++i) {
+        for (int j = 0; j < tamanho - i - 1; ++j) {
+            if (arr[j] > arr[j + 1]) {
+                // Troca os elementos se estiverem fora de ordem
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
 // Função para remover um elemento da lista
 void removerElemento(int arr[], int *tamanho, int elemento) {
     int indice = buscaBinaria(arr, *tamanho, elemento);
@@ -57,6 +71,9 @@ int main() {
             lista[tamanhoAtual++] = numero;
         }
     } while (numero != -1 && tamanhoAtual < tamanhoMaximo);
+
+    // Ordena a lista usando o Bubble Sort
+    bubbleSort(lista, tamanhoAtual);
 
     // Solicita ao usuário digitar o número a ser removido
     int elementoProcurado;
