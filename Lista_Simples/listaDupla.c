@@ -27,23 +27,24 @@ typedef struct lista{
 tp_lista *inicializar(tp_lista *sentinela) {
 
   //Inicializa a lista dupla, alocando memória para a sentinela (estrutura que guarda informações sobre a lista).
+
     sentinela = (tp_nodo*)malloc(sizeof(sentinela)); //GERA U UM ENDEREÇO DE MEMORIA PARA A SENTINELA;
-    sentinela -> first = NULL;
-    sentinela -> last = NULL;
-    sentinela -> nItens = 0;
+    sentinela -> first = NULL; // first aponta pra null
+    sentinela -> last = NULL; // last aponta pra null
+    sentinela -> nItens = 0; // nItens aponta pra null
 
     return sentinela;
 }
 
 
 
-
+//Insere um novo nó na lista dupla. 
 
 tp_lista *inserirNodo(tp_lista *sentinela){
 
     tp_nodo *novoNodo; // CRIO NOVA VARIAVEL ALEATORIA 
     tp_nodo *auxNodo;
-
+   
     if(sentinela-> first == NULL && sentinela->last == NULL) // Verifica se a lista está vazia.
     {// Se estiver, cria um novo nó, solicita informações do produto 
         novoNodo = (tp_nodo*)malloc(sizeof(novoNodo)); //GERA U UM ENDEREÇO DE MEMORIA PARA A NOVO NO;
@@ -65,10 +66,11 @@ tp_lista *inserirNodo(tp_lista *sentinela){
         novoNodo->prev = NULL;
 
         return sentinela;
+        //Se a lista estiver vazia, o novo nó se torna o primeiro e último nó.
+        
+    }else{   //Caso contrário, ele é adicionado ao final da lista.
 
         
-    }else{
-
         //variavel auxiliar que é = ao last da sentinela
         
         auxNodo = sentinela -> last;
@@ -96,12 +98,13 @@ tp_lista *inserirNodo(tp_lista *sentinela){
 }
 
 tp_lista *mostrarItens(tp_lista *sentinela){
-
+    //Inicializa um ponteiro auxiliar para percorrer a lista, começando pelo primeiro nó.
     tp_nodo *auxNodo;
     auxNodo = sentinela -> first;
 
     for (auxNodo; auxNodo != NULL; auxNodo = auxNodo -> next )
-    {
+    //Percorre a lista utilizando o ponteiro auxiliar. O loop continua enquanto auxNodo não for nulo.
+    {//Imprime as informações 
         printf( "o codigo do produto é %d \n", auxNodo -> produto.codigo);
         printf( "o nome do produto é %s \n", auxNodo -> produto.nome);
         printf( "o preco do produto é %f \n", auxNodo -> produto.preco);
@@ -115,9 +118,10 @@ tp_lista *mostrarItens(tp_lista *sentinela){
 
 tp_lista *excluir(tp_lista *sentinela) {
     int codigo;
-    tp_nodo *auxNodo, *anterior, *proximo;
 
-    if (sentinela->first == NULL) {
+    tp_nodo *auxNodo, *prev, *next;
+
+    if (sentinela->first == NULL) { // valida se a lista ta vazia
         printf("A lista está vazia. Nada a excluir.\n");
         return sentinela;
     }
@@ -130,7 +134,7 @@ tp_lista *excluir(tp_lista *sentinela) {
 
     // Procurar o nodo com o código especificado
     while (auxNodo != NULL && auxNodo->produto.codigo != codigo) {
-        anterior = auxNodo;
+        prev = auxNodo;
         auxNodo = auxNodo->next;
     }
 
@@ -140,16 +144,16 @@ tp_lista *excluir(tp_lista *sentinela) {
     }
 
     // Atualizar os ponteiros prev e next dos nodos adjacentes
-    if (anterior != NULL) {
-        anterior->next = auxNodo->next;
+    if (prev != NULL) {
+        prev->next = auxNodo->next;
     } else {
         sentinela->first = auxNodo->next;
     }
 
     if (auxNodo->next != NULL) {
-        auxNodo->next->prev = anterior;
+        auxNodo->next->prev = prev;
     } else {
-        sentinela->last = anterior;
+        sentinela->last = prev;
     }
 
     // Liberar a memória do nodo excluído
