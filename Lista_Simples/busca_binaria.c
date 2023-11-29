@@ -6,42 +6,72 @@ int buscaBinaria(int arr[], int tamanho, int elemento) {
     int fim = tamanho - 1;
 
     while (inicio <= fim) {
-        // Calcula o índice do meio
         int meio = inicio + (fim - inicio) / 2;
 
-        // Verifica se o elemento está no meio
         if (arr[meio] == elemento) {
-            return meio;  // Elemento encontrado, retorna o índice
+            return meio;
         }
 
-        // Se o elemento for menor, ignora a metade direita
         if (arr[meio] > elemento) {
             fim = meio - 1;
-        }
-        // Se o elemento for maior, ignora a metade esquerda
-        else {
+        } else {
             inicio = meio + 1;
         }
     }
 
-    return -1;  // Elemento não encontrado
+    return -1;
 }
 
-int main() {
-    // Exemplo de uso
-    int lista[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    int tamanho = sizeof(lista) / sizeof(lista[0]);
-    int elementoProcurado = 6;
+// Função para remover um elemento da lista
+void removerElemento(int arr[], int *tamanho, int elemento) {
+    int indice = buscaBinaria(arr, *tamanho, elemento);
 
-    // Chama a função de busca binária
-    int resultado = buscaBinaria(lista, tamanho, elementoProcurado);
+    if (indice != -1) {
+        // Desloca os elementos para a esquerda para preencher o espaço do elemento removido
+        for (int i = indice; i < *tamanho - 1; ++i) {
+            arr[i] = arr[i + 1];
+        }
 
-    // Exibe o resultado
-    if (resultado != -1) {
-        printf("Elemento encontrado no índice %d.\n", resultado);
+        // Atualiza o tamanho da lista
+        (*tamanho)--;
+        printf("Elemento removido com sucesso.\n");
     } else {
         printf("Elemento não encontrado na lista.\n");
     }
+}
+
+int main() {
+    int tamanhoMaximo = 100;
+    int lista[tamanhoMaximo];
+    int tamanhoAtual = 0;
+
+    // Solicita ao usuário inserir números na lista
+    printf("Digite os números na lista (digite -1 para encerrar):\n");
+
+    int numero;
+    do {
+        scanf("%d", &numero);
+
+        // Verifica se o número é diferente de -1 antes de adicioná-lo à lista
+        if (numero != -1) {
+            lista[tamanhoAtual++] = numero;
+        }
+    } while (numero != -1 && tamanhoAtual < tamanhoMaximo);
+
+    // Solicita ao usuário digitar o número a ser removido
+    int elementoProcurado;
+    printf("Digite o número que deseja remover da lista: ");
+    scanf("%d", &elementoProcurado);
+
+    // Chama a função de remoção
+    removerElemento(lista, &tamanhoAtual, elementoProcurado);
+
+    // Exibe a lista atualizada
+    printf("Lista atualizada:\n");
+    for (int i = 0; i < tamanhoAtual; ++i) {
+        printf("%d ", lista[i]);
+    }
+    printf("\n");
 
     return 0;
 }
